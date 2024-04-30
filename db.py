@@ -2,7 +2,7 @@ import pandas as pd
 from pymongo import MongoClient
 
 
-mongo_uri = "mongodb+srv://tanmaykulkarni:WJBi3jfOLkKGyyzs@bapproject.sjdqrax.mongodb.net/?retryWrites=true&w=majority&appName=BapProject"
+mongo_uri = "mongodb+srv://tanmaykulkarni:password@bapproject.sjdqrax.mongodb.net/?retryWrites=true&w=majority&appName=BapProject"
 
 
 def insert_data_to_mongodb(file_path, collection_name):
