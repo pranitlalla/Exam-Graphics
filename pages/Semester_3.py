@@ -19,7 +19,7 @@ layout = html.Div(style={'background-color':'#1D2B53'},children=[
                 value=df['Class'].unique(),
                 multi=True
             ),
-        ], style={'width': '32%','margin-bottom':'30px','color':'black'}),
+        ], style={'width': '50%','margin-bottom':'30px','color':'black'}),
         html.Div([
             html.Label('Semester:', style={'color': 'white'}),
             dcc.Dropdown(
@@ -28,7 +28,9 @@ layout = html.Div(style={'background-color':'#1D2B53'},children=[
                 value=df['Semester'].unique()[0],
                 clearable=False
             ),
-        ], style={'width': '32%','margin-bottom':'30px','color':'black'}),
+        ], style={'width': '50%','margin-bottom':'30px','color':'black'}),
+    ]),
+    html.Div(style={'margin': '0 auto', 'width': '1000px', 'display': 'flex', 'justify-content': 'space-between'}, children=[
         html.Div([
             html.Label('Subjects:', style={'color': 'white'}),
             dcc.Dropdown(
@@ -37,7 +39,16 @@ layout = html.Div(style={'background-color':'#1D2B53'},children=[
                 value=df.select_dtypes(include=['number']).columns,
                 multi=True
             ),
-        ], style={'width': '32%','margin-bottom':'30px','color':'black'}),
+        ], style={'width': '70%','margin-bottom':'30px','color':'black'}),
+        html.Div([
+            html.Label('Status:', style={'color': 'white'}),
+            dcc.Dropdown(
+                id='status-dropdown',
+                options=[{'label': i, 'value': i} for i in df['Status'].unique()],
+                value=df['Status'].unique(),
+                multi=True
+            ),
+        ], style={'width': '30%','margin-bottom':'30px','color':'black'}),
     ]),
     html.Div(style={'margin': '0 auto', 'width': '1000px'}, children=[
         dash_table.DataTable(
@@ -66,16 +77,17 @@ layout = html.Div(style={'background-color':'#1D2B53'},children=[
 ])
 
 @callback(
-    Output('table', 'columns'),    
+    Output('table', 'columns'),
     Output('table', 'data'),
     [Input('class-dropdown', 'value'),
      Input('semester-dropdown', 'value'),
-     Input('subject-dropdown', 'value')],
+     Input('subject-dropdown', 'value'),
+     Input('status-dropdown', 'value')],
      allow_duplicate=True
 )
-def update_table(class_values, semester_value, subject_values):
+def update_table(class_values, semester_value, subject_values, status_values):
     selected_columns = ['Class', 'Semester', 'UID', 'Name', 'Status'] + subject_values + ['CGPA']
-    filtered_df = df[(df['Class'].isin(class_values)) & (df['Semester'] == semester_value)]
+    filtered_df = df[(df['Class'].isin(class_values)) & (df['Semester'] == semester_value) & (df['Status'].isin(status_values))]
     filtered_df = filtered_df[selected_columns]
     columns = [{"name": i, "id": i} for i in filtered_df.columns]
     data = filtered_df.to_dict('records')
@@ -116,7 +128,7 @@ def update_unsuccessful_scores(rows):
     new_df = new_df.reset_index(drop=True)
     new_df=new_df.sort_values(by=['count_of_zeros'],ascending=True)
     fig = px.bar(new_df, x='subject', y='count_of_zeros')
-    fig.update_layout(title='Average Scores by Subject', margin=dict(l=0, r=0, t=30, b=0), plot_bgcolor='white', width=1000, height=600)
+    fig.update_layout(title='Distribution of Failed Students', margin=dict(l=0, r=0, t=30, b=0), plot_bgcolor='white', width=1000, height=600)
     return fig
 
 @callback(
@@ -155,4 +167,3 @@ def update_heatmap(rows, subject_values):
     fig = px.imshow(corr, text_auto=True)
     fig.update_layout(title='Correlation between Scores in Different Subjects', margin=dict(l=0, r=0, t=30, b=0), plot_bgcolor='white', width=1000, height=600)
     return fig
-

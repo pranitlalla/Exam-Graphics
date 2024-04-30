@@ -5,7 +5,7 @@ import plotly.express as px
 import pandas as pd
 
 data=pd.read_csv("IT_COMPS.csv")
-print(data.head())
+
 selected_columns = ['CLASS', 'PE V Elective', 'PE V Total marks(out of 100)including ISE+ESE', 'PE VI Elective', 'PE VI Total marks(out of 100)including ISE+ESE']
 df = data[selected_columns]
 
