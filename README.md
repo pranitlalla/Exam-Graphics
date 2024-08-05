@@ -19,3 +19,28 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 What things you need to install the software and how to install them:
+
+
+### Installation
+Follow these steps to get your development environment running:
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Exam-Graphics/academic-data-platform.git
+
+   cd academic-data-platform
+
+    npm install
+   
+    npm start
+
+## Contributing
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+1. **Fork the Project**
+2. **Create your Feature Branch**
+   ```bash
+   git checkout -b feature/AmazingFeature
+3. git commit -m 'Add some AmazingFeature'
+4. git push origin feature/AmazingFeature
+5. open a pull request
